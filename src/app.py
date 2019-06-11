@@ -33,7 +33,7 @@ app.config.update({
     'OIDC_CLIENT_SECRETS': 'client_secrets.json',
     'OIDC_ID_TOKEN_COOKIE_SECURE': False, # MUST be True in production
     'OIDC_REQUIRE_VERIFIED_EMAIL': False, # SHOULD be True in production
-    'OIDC_VALID_ISSUERS': ['http://localhost:8080/auth/realms/%s'.format(OPENID_REALM)],
+    'OIDC_VALID_ISSUERS': ['http://localhost:8080/auth/realms/{}'.format(OPENID_REALM)],
     'OIDC_OPENID_REALM': 'http://localhost:5000/oidc_callback',
     'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
 })
