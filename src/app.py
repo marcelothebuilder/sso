@@ -43,7 +43,7 @@ def api_requires_login(fn):
         if oidc.user_loggedin:
             return fn(*args, **kwargs)
 
-        response = flask.jsonify({'error': 'This resource required authentication.'})
+        response = flask.jsonify({'error': 'This resource requires authentication.'})
         response.status_code = 401
         response.headers.add('WWW-Authenticate', url_for('login', redirect_url=request.url))
         return response
