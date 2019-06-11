@@ -13,21 +13,29 @@ app = Flask(__name__)
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
-# Our mock database.
-users = {'foo@bar.com': {'pw': 'secret'}}
-
 app.config.update({
-    'SECRET_KEY': 'u\x91\xcf\xfa\x0c\xb9\x95\xe3t\xba2K\x7f\xfd\xca\xa3\x9f\x90\x88\xb8\xee\xa4\xd6\xe4',
+    'SECRET_KEY': 'pikachu',
     'TESTING': True,
     'DEBUG': True,
+    'OIDC_SCOPES': [
+        "openid",
+        "address",
+        "email",
+        "microprofile-jwt",
+        "offline_access",
+        "phone",
+        "profile",
+        "roles",
+        "web-origins"
+    ],
     'OIDC_CLIENT_SECRETS': 'client_secrets.json',
-    'OIDC_ID_TOKEN_COOKIE_SECURE': False,
-    'OIDC_REQUIRE_VERIFIED_EMAIL': False,
-    'OIDC_VALID_ISSUERS': ['http://localhost:8080/auth/realms/demo-realm'],
-    'OIDC_OPENID_REALM': 'http://localhost:5000/oidc_callback'
+    'OIDC_ID_TOKEN_COOKIE_SECURE': False, # MUST be True in production
+    'OIDC_REQUIRE_VERIFIED_EMAIL': False, # SHOULD be True in production
+    'OIDC_VALID_ISSUERS': ['http://localhost:8080/auth/realms/flask-test'],
+    'OIDC_OPENID_REALM': 'http://localhost:5000/oidc_callback',
+    'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
 })
 oidc = OpenIDConnect(app)
-
 
 @app.route('/')
 def hello_world():
@@ -42,9 +50,18 @@ def hello_world():
 @app.route('/private')
 @oidc.require_login
 def hello_me():
-    info = oidc.user_getinfo(['email', 'openid_id'])
+    info = oidc.user_getinfo(["aud", # user realm
+        "sub", # the user id
+        "auth_time",
+        "name", # full name
+        "given_name", # first name
+        "family_name", # last name
+        "preferred_username", #username
+        "email" # email
+        ])
+    print(info)
     return ('Hello, %s (%s)! <a href="/">Return</a>' %
-            (info.get('email'), info.get('openid_id')))
+            (info.get('email'), info.get('sub')))
 
 
 @app.route('/api')
