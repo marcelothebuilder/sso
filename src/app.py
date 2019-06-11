@@ -37,7 +37,7 @@ app.config.update({
 })
 oidc = OpenIDConnect(app)
 
-def api_requires_login(fn):
+def api_requires_authentication(fn):
     @functools.wraps(fn)
     def with_api_requires_auth(*args, **kwargs):
         if oidc.user_loggedin:
@@ -70,7 +70,7 @@ def hello_world():
 
 
 @app.route('/private')
-@api_requires_login
+@api_requires_authentication
 def hello_me():
     info = oidc.user_getinfo(["aud",  # user realm
                               "sub",  # the user id
@@ -87,7 +87,7 @@ def hello_me():
 
 
 @app.route('/private_api')
-@api_requires_login
+@api_requires_authentication
 def hello_me_api():
     info = oidc.user_getinfo(["aud",  # user realm
                               "sub",  # the user id
