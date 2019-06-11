@@ -8,13 +8,15 @@ from flask_oidc import OpenIDConnect
 
 from model.user import User
 
+OPENID_REALM = 'flask-test'
+
 app = Flask(__name__)
+app.secret_key = 'pikachu'
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 app.config.update({
-    'SECRET_KEY': 'pikachu',
     'TESTING': True,
     'DEBUG': True,
     'OIDC_SCOPES': [
@@ -31,7 +33,7 @@ app.config.update({
     'OIDC_CLIENT_SECRETS': 'client_secrets.json',
     'OIDC_ID_TOKEN_COOKIE_SECURE': False, # MUST be True in production
     'OIDC_REQUIRE_VERIFIED_EMAIL': False, # SHOULD be True in production
-    'OIDC_VALID_ISSUERS': ['http://localhost:8080/auth/realms/flask-test'],
+    'OIDC_VALID_ISSUERS': ['http://localhost:8080/auth/realms/%s'.format(OPENID_REALM)],
     'OIDC_OPENID_REALM': 'http://localhost:5000/oidc_callback',
     'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
 })
