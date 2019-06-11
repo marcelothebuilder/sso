@@ -37,12 +37,14 @@ app.config.update({
 })
 oidc = OpenIDConnect(app)
 
-
 def api_requires_login(fn):
     @functools.wraps(fn)
     def with_api_requires_auth(*args, **kwargs):
         if oidc.user_loggedin:
             return fn(*args, **kwargs)
+
+        if is_non_xhr_request():
+            return oidc.redirect_to_auth_server(request.url)
 
         response = flask.jsonify({'error': 'This resource requires authentication.'})
         response.status_code = 401
@@ -50,7 +52,6 @@ def api_requires_login(fn):
         return response
 
     return with_api_requires_auth
-
 
 @app.route('/login')
 def login():
@@ -112,6 +113,8 @@ def logout():
     oidc.logout()
     return 'Hi, you have been logged out! <a href="/">Return</a>'
 
+def is_non_xhr_request():
+    return request.accept_mimetypes.best == 'text/html'
 
 if __name__ == '__main__':
     app.run('localhost', port=5000)
