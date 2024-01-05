@@ -1,7 +1,8 @@
 repo_name: marcelothebuilder/sso
 report_id: 2156a075cc8a09eb93dfe40ac3a1fedc
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-10T19:49:31+00:00'
+timestamp: '2024-01-05T08:52:08+00:00'
 requested_by: marcelothebuilder
 provider: github
 branch: master
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/993/pUBY5pVj.png
+  detection_source_url: https://github.com/marcelothebuilder/sso
   detection_source: Repo Metadata
 - name: Flask
   description: A microframework for Python based on Werkzeug, Jinja 2 and good intentions
@@ -26,6 +28,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Microframeworks (Backend)
   image_url: https://img.stackshare.io/service/1001/default_6d109315b60108628b7cd3e159b84645c31ef0e2.png
+  detection_source_url: https://github.com/marcelothebuilder/sso/blob/master/src/requirements.txt
   detection_source: src/requirements.txt
   last_updated_by: Houman
   last_updated_on: 2018-03-03 14:28:14.000000000 Z
@@ -37,4 +40,5 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/marcelothebuilder/sso
   detection_source: Repo Metadata
